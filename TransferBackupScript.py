@@ -112,6 +112,29 @@ class Backup:
 
 		s.close()
 
+########### Read CLI arguments ###########
+
+"""
+parser = argparse.ArgumentParser(description='Take arguments to transfer backup to remote host')
+
+parser.add_argument("--remotehost", help="IP address of remote host", type=str, required=True)
+
+parser.add_argument("--username", help="user account on remote host", type=str, required=True)
+
+parser.add_argument("--password", help="password of user account on remote host", type=str, required=True)
+
+parser.add_argument("--remotedirectory", help="Directory on remote host", type=str, required=True)
+
+parser.add_argument("--localdirectory", help="Directory on local host", type=str, required=True)
+
+args = parser.parse_args()
+
+remotehost = vars(args)['remotehost']
+username = vars(args)['username']
+password = vars(args)['password']
+remotedirectory = vars(args)['remotedirectory']
+localdirectory = vars(args)['localdirectory']
+"""
 b = Backup('192.168.101.203', 'root', '/root/Backup/', '/root/Backup/')
 
 b.ping_check()
