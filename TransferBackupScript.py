@@ -33,9 +33,9 @@ class Backup:
 		if ping_check_result['result'] != 'OK':
 
 			self.logfile_object.write(self.timestamp_generator() + " Backup transfer aborted\n\n")
+			self.send_email('Backup failed')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
 			self.logfile_object.close()
-			self.send_email('Backup failed')
 			sys.exit(0)
 
 
@@ -49,10 +49,10 @@ class Backup:
 
 		if ssh_check_result['result'] != 'OK':
 
-			self.logfile_object.write(self.timestamp_generator() + " Backup transfer aborted in SSH check\n\n")
+			self.logfile_object.write(self.timestamp_generator() + " Backup transfer aborted\n\n")
+			self.send_email('Backup failed')	
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
 			self.logfile_object.close()
-			self.send_email('Backup failed')
 			sys.exit(0)
 
 	def timestamp_generator(self):
@@ -75,16 +75,16 @@ class Backup:
 		if transfer_file == 0:
 
 			self.logfile_object.write(self.timestamp_generator() + " Backup transfer completed\n\n")
+			self.send_email('Backup successful')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
 			self.logfile_object.close()
-			self.send_email('Backup successful')
 
 		else:
 
 			self.logfile_object.write(self.timestamp_generator() + " Backup transfer failed\n\n")
+			self.send_email('Backup failed')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
 			self.logfile_object.close()
-			self.send_email('Backup failed')
 
 
 	def tmp_files_cleanup(self):
@@ -95,23 +95,28 @@ class Backup:
 
 	def send_email(self, result):
 
-		s = smtplib.SMTP('smtp-mail.outlook.com', 587)
+		try:
 
-		s.starttls()
+			s = smtplib.SMTP('smtp-mail.outlook.com', 587)
 
-		s.login('youremail@email.com', 'password')
+			s.starttls()
 
-		frm = 'youremail@email.com'
-		to = 'youremail@email.com'
-		subject = 'Backup status'
-		body = result
+			s.login('youremail@email.com', 'password')
 
-		msg = "From: <%s>\nTo: <%s>\nSubject: %s\n\n%s\n\n" %(frm,to,subject,body)
+			frm = 'youremail@email.com'
+			to = 'youremail@email.com'
+			subject = 'Backup status'
+			body = result
 
-		s.sendmail(frm,to,msg)
+			msg = "From: <%s>\nTo: <%s>\nSubject: %s\n\n%s\n\n" %(frm,to,subject,body)
 
-		s.close()
+			s.sendmail(frm,to,msg)
 
+			s.close()
+
+		except Exception:
+			
+			self.logfile_object.write(self.timestamp_generator() + " " + "An email could not be sent\n\n")
 
 
 ########### Main script starts here  ###########
