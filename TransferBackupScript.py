@@ -68,7 +68,10 @@ class Backup:
 		fd_tmpfile01 = open('/tmp/tmpfile01', 'r')	
 		latest_backup_file = (fd_tmpfile01.read()).rstrip()
 
-		absolute_file_path = self.localdirectory + latest_backup_file
+		if self.localdirectory.endswith('/'):
+			absolute_file_path = self.localdirectory + latest_backup_file
+		else:
+			absolute_file_path = self.localdirectory + '/' + latest_backup_file
 
 		transfer_file = subprocess.call("rsync -avzhe ssh %s %s@%s:%s" %(absolute_file_path, self.username, self.remotehost, self.remotedirectory), stdout=open('/tmp/tmpfile02', 'w'), shell=True)
 
