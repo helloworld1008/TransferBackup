@@ -24,7 +24,7 @@ class Backup:
 		self.logfile_object.write("########## START ##########\n\n")
 		self.logfile_object.write(self.timestamp_generator() + " Starting backup cycle" + "\n\n")
 
-		print "\n\nChecking for packet drops . . .\n\n"
+		print "\n\nChecking for packet drops . . .\n"
 		self.logfile_object.write(self.timestamp_generator() + " Checking for packet drops . . .\n\n")
 
 		ping_check_result = pyping(self.remotehost, 5, 1500).pingchecker()
@@ -32,6 +32,8 @@ class Backup:
 
 		if ping_check_result['result'] != 'OK':
 
+			print ping_check_result['msg'] + "\n"
+			print "Backup transfer aborted\n" 
 			self.logfile_object.write(self.timestamp_generator() + " Backup transfer aborted\n\n")
 			self.send_email('Backup failed')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
@@ -77,6 +79,7 @@ class Backup:
 
 		if transfer_file == 0:
 
+			print "\n\nBackup transfer completed\n\n"
 			self.logfile_object.write(self.timestamp_generator() + " Backup transfer completed\n\n")
 			self.send_email('Backup successful')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
@@ -84,6 +87,7 @@ class Backup:
 
 		else:
 
+			print "\n\nBackup transfer failed...Please check /tmp/backup_logfile for details\n\n"
 			self.logfile_object.write(self.timestamp_generator() + " Backup transfer failed\n\n")
 			self.send_email('Backup failed')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
