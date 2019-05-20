@@ -43,7 +43,7 @@ class Backup:
 
 	def ssh_check(self):
 
-		print "\n\nChecking for SSH conectivity ...\n\n"
+		print "\n\nChecking for SSH conectivity . . .\n\n"
 		self.logfile_object.write(self.timestamp_generator() + " Checking for SSH connectivity . . .\n\n")
 
 		ssh_check_result = pyssh(self.remotehost,self.username).sshchecker()
