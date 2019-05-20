@@ -46,7 +46,10 @@ class Backup:
 		print "\n\nChecking for SSH conectivity . . .\n\n"
 		self.logfile_object.write(self.timestamp_generator() + " Checking for SSH connectivity . . .\n\n")
 
+		original = sys.stderr
+		sys.stderr = open('/tmp/dummyfile.txt', 'w')
 		ssh_check_result = pyssh(self.remotehost,self.username).sshchecker()
+		sys.stderr = original
 		self.logfile_object.write(self.timestamp_generator() + " " + ssh_check_result['msg'] + "\n\n")
 
 		if ssh_check_result['result'] != 'OK':
