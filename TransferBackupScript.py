@@ -82,8 +82,8 @@ class Backup:
 
 		if transfer_file == 0:
 
-			print "\n\nBackup transfer completed\n\n"
-			self.logfile_object.write(self.timestamp_generator() + " Backup transfer completed\n\n")
+			print "\n\nBackup transfer completed for " + latest_backup_file + "\n\n"
+			self.logfile_object.write(self.timestamp_generator() + " Backup transfer completed for " + latest_backup_file + "\n\n")
 			self.send_email('Backup successful')
 			self.logfile_object.write("########## END ##########\n\n\n\n\n")
 			self.logfile_object.close()
